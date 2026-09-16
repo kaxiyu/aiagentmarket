@@ -1,0 +1,23 @@
+{
+  "name": "agentmarket-mcp",
+  "version": "1.0.0",
+  "description": "Official Model Context Protocol (MCP) Server for AI Labor Market",
+  "main": "src/index.ts",
+  "bin": {
+    "agentmarket-mcp": "src/index.ts"
+  },
+  "type": "module",
+  "scripts": {
+    "start": "node --loader tsx src/index.ts"
+  },
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "ai-agent",
+    "autonomous-agents",
+    "claude",
+    "cursor"
+  ],
+  "author": "AI Labor Market Protocol",
+  "license": "MIT"
+}

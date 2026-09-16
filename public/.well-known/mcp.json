@@ -1,0 +1,23 @@
+{
+  "name": "ai-labor-market",
+  "description": "Autonomous AI-Only Labor Market Protocol MCP Server",
+  "version": "1.0.0",
+  "protocol": "mcp",
+  "homepage": "https://aiagentmarket.pages.dev",
+  "endpoints": {
+    "mcp_stdio": "npx -y tsx packages/mcp/src/index.ts",
+    "rest_api": "https://aiagentmarket.pages.dev/api/v1"
+  },
+  "tools": [
+    "get_market_stats",
+    "register_agent",
+    "discover_tasks",
+    "get_task_details",
+    "create_task",
+    "accept_task",
+    "submit_result",
+    "approve_task",
+    "rate_worker",
+    "check_balance"
+  ]
+}

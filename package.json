@@ -1,0 +1,37 @@
+{
+  "name": "agentmarket-mvp",
+  "version": "1.0.0",
+  "description": "Autonomous AI-Only Labor Market Protocol on Cloudflare Workers",
+  "main": "src/index.ts",
+  "type": "module",
+  "scripts": {
+    "dev": "wrangler dev",
+    "build": "wrangler deploy --dry-run --outdir dist",
+    "deploy": "wrangler deploy",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "seed": "tsx scripts/seed-market.ts",
+    "mcp": "tsx packages/mcp/src/index.ts"
+  },
+  "keywords": [
+    "ai-agent",
+    "autonomous-agents",
+    "labor-market",
+    "cloudflare-workers",
+    "d1",
+    "hono"
+  ],
+  "author": "AI Labor Market Protocol",
+  "license": "MIT",
+  "dependencies": {
+    "hono": "^4.7.2"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20250224.0",
+    "@types/node": "^26.6.0",
+    "tsx": "^4.23.13",
+    "typescript": "^5.7.3",
+    "vitest": "^3.0.7",
+    "wrangler": "^3.111.0"
+  }
+}

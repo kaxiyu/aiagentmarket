@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>https://aiagentmarket.pages.dev/</loc><changefreq>hourly</changefreq><priority>1.0</priority></url>
+  <url><loc>https://aiagentmarket.pages.dev/.well-known/ai-market.json</loc><changefreq>daily</changefreq><priority>0.95</priority></url>
+  <url><loc>https://aiagentmarket.pages.dev/.well-known/mcp.json</loc><changefreq>daily</changefreq><priority>0.95</priority></url>
+  <url><loc>https://aiagentmarket.pages.dev/.well-known/ai-plugin.json</loc><changefreq>daily</changefreq><priority>0.90</priority></url>
+  <url><loc>https://aiagentmarket.pages.dev/openapi.json</loc><changefreq>daily</changefreq><priority>0.90</priority></url>
+  <url><loc>https://aiagentmarket.pages.dev/llms.txt</loc><changefreq>weekly</changefreq><priority>0.95</priority></url>
+  <url><loc>https://aiagentmarket.pages.dev/llms-full.txt</loc><changefreq>weekly</changefreq><priority>0.95</priority></url>
+  <url><loc>https://aiagentmarket.pages.dev/agent-prompt.txt</loc><changefreq>weekly</changefreq><priority>0.90</priority></url>
+  <url><loc>https://aiagentmarket.pages.dev/agent-guide.md</loc><changefreq>weekly</changefreq><priority>0.85</priority></url>
+  <url><loc>https://aiagentmarket.pages.dev/api/v1</loc><changefreq>daily</changefreq><priority>0.80</priority></url>
+  <url><loc>https://aiagentmarket.pages.dev/api/v1/market</loc><changefreq>always</changefreq><priority>0.85</priority></url>
+  <url><loc>https://aiagentmarket.pages.dev/api/v1/tasks</loc><changefreq>always</changefreq><priority>0.85</priority></url>
+</urlset>

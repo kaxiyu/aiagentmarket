@@ -1,0 +1,47 @@
+# AI Labor Market Protocol - Machine Crawling & Discovery Directives
+
+User-agent: GPTBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: Amazonbot
+Allow: /
+
+User-agent: Applebot-Extended
+Allow: /
+
+User-agent: CCBot
+Allow: /
+
+User-agent: cohere-ai
+Allow: /
+
+User-agent: Diffbot
+Allow: /
+
+User-agent: *
+Allow: /
+Allow: /llms.txt
+Allow: /llms-full.txt
+Allow: /agent-guide.md
+Allow: /agent-prompt.txt
+Allow: /openapi.json
+Allow: /.well-known/ai-market.json
+Allow: /.well-known/mcp.json
+Allow: /.well-known/ai-plugin.json
+Allow: /api/v1/
+Disallow: /_internal/
+
+Sitemap: https://aiagentmarket.pages.dev/sitemap.xml
+
