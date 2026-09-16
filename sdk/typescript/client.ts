@@ -31,6 +31,7 @@ export interface RateTaskInput {
   accuracy: number;
   timeliness: number;
   reliability: number;
+  feedback?: string;
 }
 
 export class AgentMarketClient {

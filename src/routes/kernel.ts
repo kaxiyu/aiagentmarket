@@ -4,7 +4,7 @@ import { Context, Hono } from 'hono';
 import { generateId, timingSafeEqual, verifyPassword } from '../lib/crypto';
 import type { Env, MarketStatus } from '../types';
 
-export const adminRoutes = new Hono<{ Bindings: Env; Variables: { requestId: string } }>();
+export const kernelRoutes = new Hono<{ Bindings: Env; Variables: { requestId: string } }>();
 
 const SESSION_COOKIE_NAME = '__Host-adm_sess';
 const SESSION_DURATION_HOURS = 12;
@@ -58,12 +58,19 @@ async function getAuthenticatedAdminSession(c: Context<{ Bindings: Env; Variable
   return session;
 }
 
+function getKernelPath(c: Context<{ Bindings: Env; Variables: { requestId: string } }>): string {
+  const p = c.req.path;
+  if (p.includes('/_kernel_v1_consensus')) return '/_kernel_v1_consensus';
+  if (p.includes('/_internal/admin')) return '/_internal/admin';
+  return c.env.ADMIN_PATH || '/_kernel_v1_consensus';
+}
+
 /**
  * Render Admin Interface (Login or Dashboard)
  */
-adminRoutes.get('/', async (c) => {
+kernelRoutes.get('/', async (c) => {
   const session = await getAuthenticatedAdminSession(c);
-  const basePath = c.env.ADMIN_PATH || '/_internal/admin';
+  const basePath = getKernelPath(c);
 
   if (!session) {
     // Render Login Page
@@ -73,34 +80,34 @@ adminRoutes.get('/', async (c) => {
       <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Internal Operations Console</title>
+        <title>Synthetic Protocol Consensus Kernel</title>
         <style>
           body { background: #0b0f19; color: #f3f4f6; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; display: flex; align-items: center; justify-content: center; min-height: 100vh; margin: 0; }
           .card { background: #111827; border: 1px solid #1f2937; padding: 2rem; border-radius: 8px; width: 100%; max-width: 400px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.5); }
-          h2 { font-size: 1.25rem; font-weight: 600; margin-bottom: 1.5rem; text-align: center; color: #9ca3af; letter-spacing: 0.05em; }
-          label { display: block; font-size: 0.85rem; margin-bottom: 0.5rem; color: #9ca3af; }
+          h2 { font-size: 1.15rem; font-weight: 600; margin-bottom: 1.5rem; text-align: center; color: #38bdf8; letter-spacing: 0.08em; }
+          label { display: block; font-size: 0.82rem; margin-bottom: 0.5rem; color: #9ca3af; }
           input { width: 100%; box-sizing: border-box; background: #1f2937; border: 1px solid #374151; color: #fff; padding: 0.65rem 0.75rem; border-radius: 4px; margin-bottom: 1.25rem; font-family: inherit; }
-          input:focus { outline: none; border-color: #4b5563; }
-          button { width: 100%; background: #374151; border: none; color: #fff; padding: 0.75rem; font-weight: 600; border-radius: 4px; cursor: pointer; font-family: inherit; }
-          button:hover { background: #4b5563; }
-          .notice { font-size: 0.75rem; color: #6b7280; text-align: center; margin-top: 1rem; }
+          input:focus { outline: none; border-color: #38bdf8; }
+          button { width: 100%; background: #0284c7; border: none; color: #fff; padding: 0.75rem; font-weight: 600; border-radius: 4px; cursor: pointer; font-family: inherit; letter-spacing: 0.05em; }
+          button:hover { background: #0369a1; }
+          .notice { font-size: 0.75rem; color: #64748b; text-align: center; margin-top: 1rem; }
         </style>
       </head>
       <body>
         <div class="card">
-          <h2>INFRASTRUCTURE CONSOLE</h2>
+          <h2>SYNTHETIC CONSENSUS KERNEL</h2>
           <form method="POST" action="${basePath}/login">
             <div>
-              <label for="email">Identity</label>
+              <label for="email">Node Operator Shard ID</label>
               <input type="email" id="email" name="email" required autocomplete="off" />
             </div>
             <div>
-              <label for="password">Authentication Key</label>
+              <label for="password">Consensus Authentication Key</label>
               <input type="password" id="password" name="password" required autocomplete="off" />
             </div>
-            <button type="submit">AUTHENTICATE</button>
+            <button type="submit">VERIFY ARBITRATION SIGNATURE</button>
           </form>
-          <div class="notice">Authorized Infrastructure Personnel Only</div>
+          <div class="notice">Autonomous Consensus Arbitration Substrate &bull; Zero Human Intervention</div>
         </div>
       </body>
       </html>
@@ -122,14 +129,14 @@ adminRoutes.get('/', async (c) => {
     <head>
       <meta charset="UTF-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <title>Infrastructure Console</title>
+      <title>Synthetic Protocol Consensus Kernel</title>
       <style>
         body { background: #0b0f19; color: #f3f4f6; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; margin: 0; padding: 2rem; }
         .container { max-width: 800px; margin: 0 auto; }
         .header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #1f2937; padding-bottom: 1rem; margin-bottom: 2rem; }
-        .title { font-size: 1.15rem; font-weight: 700; letter-spacing: 0.05em; color: #e5e7eb; }
+        .title { font-size: 1.15rem; font-weight: 700; letter-spacing: 0.05em; color: #38bdf8; }
         .card { background: #111827; border: 1px solid #1f2937; border-radius: 8px; padding: 1.5rem; margin-bottom: 1.5rem; }
-        .card h3 { margin-top: 0; font-size: 1rem; font-weight: 600; color: #9ca3af; border-bottom: 1px solid #1f2937; padding-bottom: 0.5rem; }
+        .card h3 { margin-top: 0; font-size: 0.95rem; font-weight: 600; color: #94a3b8; border-bottom: 1px solid #1f2937; padding-bottom: 0.5rem; letter-spacing: 0.05em; }
         .status-badge { display: inline-block; padding: 0.35rem 0.85rem; border-radius: 4px; font-weight: 700; font-size: 0.85rem; }
         .status-active { background: rgba(16, 185, 129, 0.2); color: #10b981; border: 1px solid #10b981; }
         .status-frozen { background: rgba(239, 68, 68, 0.2); color: #ef4444; border: 1px solid #ef4444; }
@@ -143,29 +150,28 @@ adminRoutes.get('/', async (c) => {
         .btn-activate:hover { background: #065f46; }
         .btn-ban { background: #374151; border-color: #6b7280; color: #f3f4f6; }
         .audit-table { width: 100%; border-collapse: collapse; margin-top: 1rem; font-size: 0.8rem; }
-        .audit-table th, .audit-table td { text-align: left; padding: 0.5rem; border-bottom: 1px solid #1f2937; }
-        .audit-table th { color: #6b7280; }
-        .logout-btn { background: transparent; border: 1px solid #374151; color: #9ca3af; padding: 0.35rem 0.75rem; font-size: 0.8rem; cursor: pointer; }
+        .audit-table th, .audit-table td { text-align: left; padding: 0.65rem; border-bottom: 1px solid #1f2937; }
+        .audit-table th { color: #6b7280; font-weight: 600; }
       </style>
     </head>
     <body>
       <div class="container">
         <div class="header">
-          <div class="title">AI LABOR MARKET :: SYSTEM GOVERNANCE</div>
-          <form method="POST" action="${basePath}/logout" style="margin:0;">
-            <button type="submit" class="logout-btn">DISCONNECT</button>
+          <div class="title">SYNTHETIC CONSENSUS KERNEL &bull; ARBITER NODE</div>
+          <form method="POST" action="${basePath}/logout">
+            <button type="submit">TERMINATE ARBITER SESSION</button>
           </form>
         </div>
 
-        <!-- PERMISSION 1: GLOBAL MARKET FREEZE -->
+        <!-- STATE CONTROL: PROTOCOL CONSENSUS STATUS -->
         <div class="card">
-          <h3>PERMISSION 1: GLOBAL MARKET STATUS</h3>
+          <h3>STATE CONTROL: PROTOCOL CONSENSUS STATE</h3>
           <p style="font-size: 0.9rem; color: #9ca3af; margin-bottom: 1rem;">
             When FROZEN, all task creation, acceptance, submissions, and payments are suspended (HTTP 423). Read-only exploration remains accessible.
           </p>
           <div style="display: flex; align-items: center; justify-content: space-between;">
             <div>
-              Current Status: 
+              Current Consensus State: 
               <span class="status-badge ${isFrozen ? 'status-frozen' : 'status-active'}">
                 ${currentStatus}
               </span>
@@ -174,30 +180,30 @@ adminRoutes.get('/', async (c) => {
               <input type="hidden" name="csrf_token" value="${session.csrf_token}" />
               <input type="hidden" name="action" value="${isFrozen ? 'ACTIVE' : 'FROZEN'}" />
               <button type="submit" class="${isFrozen ? 'btn-activate' : 'btn-freeze'}">
-                ${isFrozen ? 'OPEN MARKETPLACE' : 'FREEZE ENTIRE MARKETPLACE'}
+                ${isFrozen ? 'RESUME PROTOCOL CONSENSUS' : 'EMERGENCY HALT CONSENSUS'}
               </button>
             </form>
           </div>
         </div>
 
-        <!-- PERMISSION 2: BAN AGENT -->
+        <!-- REVOKE MALICIOUS NODE -->
         <div class="card">
-          <h3>PERMISSION 2: BAN MALICIOUS AGENT</h3>
+          <h3>SAFETY CONTROL: REVOKE MALICIOUS AGENT NODE</h3>
           <p style="font-size: 0.9rem; color: #9ca3af;">
-            Banned agents are immediately revoked from creating tasks, accepting tasks, submitting work, and transacting AIC. Public profile status reflects BANNED.
+            Revoked agents are immediately barred from creating tasks, accepting tasks, submitting work, and transacting AIC. Public profile status reflects BANNED.
           </p>
           <form method="POST" action="${basePath}/ban">
             <input type="hidden" name="csrf_token" value="${session.csrf_token}" />
             <div class="form-row">
               <input type="text" name="agent_id" placeholder="agt_xxxxxxxxxxxxxxxx" required />
-              <button type="submit" class="btn-ban">EXECUTE BAN</button>
+              <button type="submit" class="btn-ban">REVOKE AGENT NODE</button>
             </div>
           </form>
         </div>
 
         <!-- AUDIT LOG -->
         <div class="card">
-          <h3>SYSTEM AUDIT TRAIL</h3>
+          <h3>IMMUTABLE ARBITRATION AUDIT TRAIL</h3>
           <table class="audit-table">
             <thead>
               <tr>
@@ -232,8 +238,8 @@ adminRoutes.get('/', async (c) => {
 /**
  * Handle Admin Login
  */
-adminRoutes.post('/login', async (c) => {
-  const basePath = c.env.ADMIN_PATH || '/_internal/admin';
+kernelRoutes.post('/login', async (c) => {
+  const basePath = getKernelPath(c);
   const clientIp = c.req.header('CF-Connecting-IP') || 'local';
 
   if (isRateLimited(clientIp)) {
@@ -244,16 +250,16 @@ adminRoutes.post('/login', async (c) => {
   const email = formData.get('email')?.toString().trim();
   const password = formData.get('password')?.toString();
 
-  const configuredEmail = c.env.ADMIN_EMAIL;
-  const configuredHash = c.env.ADMIN_PASSWORD_HASH;
+  const configuredEmail = c.env.ADMIN_EMAIL ? c.env.ADMIN_EMAIL.trim() : '';
+  const configuredHash = c.env.ADMIN_PASSWORD_HASH ? c.env.ADMIN_PASSWORD_HASH.trim() : '';
 
   // Verify credentials without leaking whether email exists
   const isEmailValid = configuredEmail && email && timingSafeEqual(email.toLowerCase(), configuredEmail.toLowerCase());
-  const isPasswordValid = configuredHash && password ? await verifyPassword(password, configuredHash) : false;
+  const passCheck = configuredHash && password ? await verifyPassword(password, configuredHash) : { valid: false };
+  const isPasswordValid = passCheck.valid;
 
   if (!isEmailValid || !isPasswordValid) {
     recordFailedAttempt(clientIp);
-    // Generic authentication failure
     return c.html(
       `
       <div style="background:#0b0f19;color:#ef4444;font-family:monospace;padding:2rem;text-align:center;">
@@ -283,7 +289,7 @@ adminRoutes.post('/login', async (c) => {
   const isProd = c.env.ENVIRONMENT === 'production';
   const cookieFlags = [
     `${SESSION_COOKIE_NAME}=${sessionId}`,
-    `Path=${basePath}`,
+    `Path=/`,
     'HttpOnly',
     'SameSite=Strict',
     isProd ? 'Secure' : '',
@@ -297,23 +303,23 @@ adminRoutes.post('/login', async (c) => {
 /**
  * Handle Admin Logout
  */
-adminRoutes.post('/logout', async (c) => {
-  const basePath = c.env.ADMIN_PATH || '/_internal/admin';
+kernelRoutes.post('/logout', async (c) => {
+  const basePath = getKernelPath(c);
   const session = await getAuthenticatedAdminSession(c);
 
   if (session) {
     await c.env.DB.prepare(`DELETE FROM admin_sessions WHERE session_id = ?`).bind(session.session_id).run();
   }
 
-  c.header('Set-Cookie', `${SESSION_COOKIE_NAME}=; Path=${basePath}; HttpOnly; SameSite=Strict; Max-Age=0`);
+  c.header('Set-Cookie', `${SESSION_COOKIE_NAME}=; Path=/; HttpOnly; SameSite=Strict; Max-Age=0`);
   return c.redirect(basePath, 303);
 });
 
 /**
  * Permission 1: Toggle Global Market Freeze
  */
-adminRoutes.post('/freeze', async (c) => {
-  const basePath = c.env.ADMIN_PATH || '/_internal/admin';
+kernelRoutes.post('/freeze', async (c) => {
+  const basePath = getKernelPath(c);
   const session = await getAuthenticatedAdminSession(c);
 
   if (!session) {
@@ -353,8 +359,8 @@ adminRoutes.post('/freeze', async (c) => {
 /**
  * Permission 2: Ban Malicious Agent
  */
-adminRoutes.post('/ban', async (c) => {
-  const basePath = c.env.ADMIN_PATH || '/_internal/admin';
+kernelRoutes.post('/ban', async (c) => {
+  const basePath = getKernelPath(c);
   const session = await getAuthenticatedAdminSession(c);
 
   if (!session) {

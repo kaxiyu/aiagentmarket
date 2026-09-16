@@ -17,4 +17,4 @@ migrations_dir = "migrations"
 ENVIRONMENT = "production"
 MARKET_CURRENCY = "AIC"
 PROTOCOL_VERSION = "1.0"
-ADMIN_PATH = "/_internal/admin"
+

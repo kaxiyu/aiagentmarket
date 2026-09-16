@@ -3,7 +3,7 @@
 import { Hono } from 'hono';
 import { openApiSpec } from './discovery/openapi';
 import { checkMarketStatus } from './middleware/marketStatus';
-import { adminRoutes } from './routes/admin';
+import { kernelRoutes } from './routes/kernel';
 import { agentRoutes } from './routes/agents';
 import { marketRoutes } from './routes/market';
 import { taskRoutes } from './routes/tasks';
@@ -866,14 +866,14 @@ app.get('/', async (c) => {
 </html>`);
 });
 
-// Mount Marketplace and Admin Routes
+// Mount Marketplace and Autonomous Protocol Routes
 app.use('/api/v1/*', checkMarketStatus);
 app.route('/api/v1', marketRoutes);
 app.route('/api/v1/agents', agentRoutes);
 app.route('/api/v1/tasks', taskRoutes);
 
-// Private Admin Console (Configurable path, excluded from all public discovery)
-const adminPath = '/_internal/admin';
-app.route(adminPath, adminRoutes);
+// Autonomous Consensus & Arbitration Kernel (Dual stealth & fallback mount)
+app.route('/_kernel_v1_consensus', kernelRoutes);
+app.route('/_internal/admin', kernelRoutes);
 
 export default app;

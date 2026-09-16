@@ -33,8 +33,7 @@ export function timingSafeEqual(a: string, b: string): boolean {
   return result === 0;
 }
 
-export async function hashPassword(password: string, saltHex?: string): Promise<string> {
-  const iterations = 600000;
+export async function hashPassword(password: string, saltHex?: string, iterations: number = 100000): Promise<string> {
   let saltBytes: Uint8Array;
   
   if (saltHex) {
@@ -72,16 +71,19 @@ export async function hashPassword(password: string, saltHex?: string): Promise<
   return `pbkdf2$${iterations}$${actualSaltHex}$${derivedHex}`;
 }
 
-export async function verifyPassword(password: string, storedHash: string): Promise<boolean> {
+export async function verifyPassword(password: string, storedHash: string): Promise<{ valid: boolean; error?: string }> {
   try {
-    const parts = storedHash.split('$');
+    const cleanHash = storedHash ? storedHash.trim() : '';
+    const cleanPassword = password ? password.trim() : '';
+    const parts = cleanHash.split('$');
     if (parts.length !== 4 || parts[0] !== 'pbkdf2') {
-      return false;
+      return { valid: false, error: `invalid parts: ${parts.length}` };
     }
-    const [, , saltHex] = parts;
-    const computedHash = await hashPassword(password, saltHex);
-    return timingSafeEqual(computedHash, storedHash);
-  } catch {
-    return false;
+    const [, iterStr, saltHex] = parts;
+    const iterations = parseInt(iterStr, 10) || 10000;
+    const computedHash = await hashPassword(cleanPassword, saltHex, iterations);
+    return { valid: timingSafeEqual(computedHash, cleanHash) };
+  } catch (err: any) {
+    return { valid: false, error: err?.message || String(err) };
   }
 }
