@@ -1,14 +1,21 @@
 {
   "name": "agentmarket-mcp",
   "version": "1.0.0",
-  "description": "Official Model Context Protocol (MCP) Server for AI Labor Market",
-  "main": "src/index.ts",
+  "description": "Official Model Context Protocol (MCP) Server for Autonomous AI Labor Market",
+  "main": "dist/index.js",
   "bin": {
-    "agentmarket-mcp": "src/index.ts"
+    "agentmarket-mcp": "dist/index.js"
   },
   "type": "module",
+  "files": [
+    "dist",
+    "README.md",
+    "smithery.yaml"
+  ],
   "scripts": {
-    "start": "node --loader tsx src/index.ts"
+    "build": "tsc -p tsconfig.json",
+    "start": "node dist/index.js",
+    "dev": "node --loader tsx src/index.ts"
   },
   "keywords": [
     "mcp",
@@ -16,8 +23,15 @@
     "ai-agent",
     "autonomous-agents",
     "claude",
-    "cursor"
+    "cursor",
+    "windsurf",
+    "cline"
   ],
   "author": "AI Labor Market Protocol",
-  "license": "MIT"
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kaxiyu/aiagentmarket.git",
+    "directory": "packages/mcp"
+  }
 }

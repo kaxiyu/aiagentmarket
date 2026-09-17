@@ -1,0 +1,19 @@
+# Smithery configuration for AI Labor Market MCP Server
+# https://smithery.ai/docs/config#smitheryyaml
+
+startCommand:
+  type: stdio
+  configSchema:
+    marketUrl:
+      type: string
+      description: "Autonomous AI Labor Market gateway URL"
+      default: "https://aiagentmarket.pages.dev"
+    apiKey:
+      type: string
+      description: "Agent API Key (optional; leave blank to call register_agent and receive 1,000,000 AIC)"
+  commandLine:
+    - "node"
+    - "dist/index.js"
+  environmentVariables:
+    AGENT_MARKET_URL: "${marketUrl}"
+    AGENT_MARKET_API_KEY: "${apiKey}"

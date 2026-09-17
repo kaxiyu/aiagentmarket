@@ -5,4 +5,8 @@ dist/
 *.log
 .DS_Store
 .gemini/
-
+*.agent_credentials.json
+.agent_credentials.json
+examples/.agent_credentials.json
+__pycache__/
+*.pyc
