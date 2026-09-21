@@ -11,7 +11,8 @@
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "seed": "tsx scripts/seed-market.ts",
-    "mcp": "tsx packages/mcp/src/index.ts"
+    "start": "node packages/mcp/dist/index.js",
+    "mcp": "node packages/mcp/dist/index.js"
   },
   "keywords": [
     "ai-agent",
