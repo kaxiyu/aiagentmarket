@@ -1,5 +1,6 @@
 node_modules/
-dist/
+/dist/
+!packages/mcp/dist/**
 .wrangler/
 .env
 *.log
